@@ -1,0 +1,15 @@
+{
+  "name": "january-2024-nodejs",
+  "version": "1.1.2",
+  "description": "",
+  "main": "../jan-2024-nodejs/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "express"
+  ],
+  "author": "feden2906",
+  "license": "ISC"
+}
