@@ -14,3 +14,8 @@ const server = http.createServer((req, res) => {
 server.listen(3000);
 
 console.log('Server running at http://  3000')
+console.log('11111111111')
+
+console.log('Hello World!');
+console.log(__dirname);
+console.log(__filename);
