@@ -12,3 +12,5 @@ const server = http.createServer((req, res) => {
     res.end('Hello World\n2222');
 })
 server.listen(3000);
+
+console.log('Server running at http://  3000')
