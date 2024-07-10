@@ -11,5 +11,8 @@
     "express"
   ],
   "author": "feden2906",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
