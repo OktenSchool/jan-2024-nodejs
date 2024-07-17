@@ -73,6 +73,7 @@ app.use(
     res.status(err.status || 500).json(err.message);
   },
 );
+
 process.on("uncaughtException", (e) => {
   console.error("uncaughtException", e.message, e.stack);
   process.exit(1);
