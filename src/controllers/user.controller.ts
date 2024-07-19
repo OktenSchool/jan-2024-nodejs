@@ -36,7 +36,7 @@ class UserController {
   //TODO
   public async updateById(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = Number(req.params.userId);
+      const userId = req.params.userId;
       const dto = req.body as IUser;
 
       const result = await userService.updateById(userId, dto);
@@ -49,7 +49,7 @@ class UserController {
   //TODO
   public async deleteById(req: Request, res: Response, next: NextFunction) {
     try {
-      const userId = Number(req.params.userId);
+      const userId = req.params.userId;
       await userService.deleteById(userId);
       res.sendStatus(204);
     } catch (e) {
