@@ -22,13 +22,16 @@
     "express": "^4.19.2",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1"
+    "mongoose": "^8.5.1",
+    "nodemailer": "^6.9.14",
+    "nodemailer-express-handlebars": "^6.1.2"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.14.10",
+    "@types/nodemailer-express-handlebars": "^4.0.5",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
     "eslint": "^8.57.0",
