@@ -73,6 +73,22 @@ class AuthService {
     return tokens;
   }
 
+  public async logout(payload: ITokenPayload, tokenId: string): Promise<void> {
+    await tokenRepository.deleteById(tokenId);
+    const user = await userRepository.getById(payload.userId);
+    await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
+      name: user.name,
+    });
+  }
+
+  public async logoutAll(payload: ITokenPayload): Promise<void> {
+    await tokenRepository.deleteByParams({ _userId: payload.userId });
+    const user = await userRepository.getById(payload.userId);
+    await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
+      name: user.name,
+    });
+  }
+
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByParams({ email });
     if (user) {
