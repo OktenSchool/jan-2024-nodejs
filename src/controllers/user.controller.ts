@@ -6,7 +6,8 @@ import { userService } from "../services/user.service";
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await userService.getList();
+      const query = req.query;
+      const result = await userService.getList(query);
       res.json(result);
     } catch (e) {
       next(e);

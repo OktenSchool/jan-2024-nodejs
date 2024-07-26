@@ -2,8 +2,8 @@ import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
 
 class UserService {
-  public async getList(): Promise<IUser[]> {
-    return await userRepository.getList();
+  public async getList(query: any): Promise<IUser[]> {
+    return await userRepository.getList(query);
   }
 
   public async getById(userId: string): Promise<IUser> {
