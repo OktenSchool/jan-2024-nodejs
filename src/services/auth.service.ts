@@ -1,7 +1,13 @@
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api-error";
+import {
+  IForgotResetPassword,
+  IForgotSendEmail,
+} from "../interfaces/action-token.interface";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { ILogin, IUser } from "../interfaces/user.interface";
+import { actionTokenRepository } from "../repositories/action-token.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "./email.service";
@@ -86,6 +92,41 @@ class AuthService {
     const user = await userRepository.getById(payload.userId);
     await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
       name: user.name,
+    });
+  }
+
+  public async forgotPassword(dto: IForgotSendEmail): Promise<void> {
+    const user = await userRepository.getByParams({ email: dto.email });
+    if (!user) return;
+
+    const actionToken = await tokenService.generateActionToken(
+      { userId: user._id, role: user.role },
+      ActionTokenTypeEnum.FORGOT_PASSWORD,
+    );
+    await actionTokenRepository.create({
+      actionToken,
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+      _userId: user._id,
+    });
+    await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, dto.email, {
+      name: user.name,
+      actionToken,
+    });
+  }
+
+  public async forgotPasswordSet(
+    dto: IForgotResetPassword,
+    jwtPayload: ITokenPayload,
+  ): Promise<void> {
+    const password = await passwordService.hashPassword(dto.password);
+    await userRepository.updateById(jwtPayload.userId, { password });
+
+    await actionTokenRepository.deleteByParams({
+      _userId: jwtPayload.userId,
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+    });
+    await tokenRepository.deleteByParams({
+      _userId: jwtPayload.userId,
     });
   }
 
