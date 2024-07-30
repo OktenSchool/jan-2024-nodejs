@@ -27,17 +27,20 @@ class AuthService {
       userId: user._id,
       role: user.role,
     });
-    //TODO
-    // const actionToken = await tokenService.generateActionToken({
-    //   userId: user._id,
-    //   role: user.role,
-    // });
+    const actionToken = await tokenService.generateActionToken(
+      { userId: user._id, role: user.role },
+      ActionTokenTypeEnum.VERIFY_EMAIL,
+    );
 
     await tokenRepository.create({ ...tokens, _userId: user._id });
-
+    await actionTokenRepository.create({
+      actionToken,
+      type: ActionTokenTypeEnum.VERIFY_EMAIL,
+      _userId: user._id,
+    });
     await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
       name: dto.name,
-      actionToken: "actionToken",
+      actionToken,
     });
     return { user, tokens };
   }
@@ -127,6 +130,15 @@ class AuthService {
     });
     await tokenRepository.deleteByParams({
       _userId: jwtPayload.userId,
+    });
+  }
+
+  public async verify(jwtPayload: ITokenPayload): Promise<void> {
+    await userRepository.updateById(jwtPayload.userId, { isVerified: true });
+
+    await actionTokenRepository.deleteByParams({
+      _userId: jwtPayload.userId,
+      type: ActionTokenTypeEnum.VERIFY_EMAIL,
     });
   }
 
