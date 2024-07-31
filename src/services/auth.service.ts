@@ -142,6 +142,24 @@ class AuthService {
     });
   }
 
+  public async changePassword(
+    jwtPayload: ITokenPayload,
+    dto: { oldPassword: string; newPassword: string },
+  ): Promise<void> {
+    const user = await userRepository.getById(jwtPayload.userId);
+    const isPasswordCorrect = await passwordService.comparePassword(
+      dto.oldPassword,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new ApiError("Invalid password", 401);
+    }
+
+    const password = await passwordService.hashPassword(dto.newPassword);
+    await userRepository.updateById(jwtPayload.userId, { password });
+    await tokenRepository.deleteByParams({ _userId: jwtPayload.userId });
+  }
+
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByParams({ email });
     if (user) {
