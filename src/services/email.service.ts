@@ -42,7 +42,6 @@ class EmailService {
   ): Promise<void> {
     const { subject, template } = emailConstant[type];
 
-    context["frontUrl"] = configs.FRONTEND_URL;
     const options = {
       to,
       subject,

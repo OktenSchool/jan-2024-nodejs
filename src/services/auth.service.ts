@@ -1,3 +1,4 @@
+import { configs } from "../configs/configs";
 import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api-error";
@@ -42,6 +43,7 @@ class AuthService {
     await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
       name: dto.name,
       actionToken,
+      frontUrl: configs.FRONTEND_URL,
     });
     return { user, tokens };
   }
@@ -88,6 +90,7 @@ class AuthService {
     const user = await userRepository.getById(payload.userId);
     await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
       name: user.name,
+      frontUrl: configs.FRONTEND_URL,
     });
   }
 
@@ -96,6 +99,7 @@ class AuthService {
     const user = await userRepository.getById(payload.userId);
     await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
       name: user.name,
+      frontUrl: configs.FRONTEND_URL,
     });
   }
 
@@ -115,6 +119,7 @@ class AuthService {
     await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, dto.email, {
       name: user.name,
       actionToken,
+      frontUrl: configs.FRONTEND_URL,
     });
   }
 
