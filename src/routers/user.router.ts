@@ -17,6 +17,12 @@ router.put(
   userController.updateMe,
 );
 router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
+router.post(
+  "/me/avatar",
+  authMiddleware.checkAccessToken,
+  userController.uploadAvatar,
+);
+
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
