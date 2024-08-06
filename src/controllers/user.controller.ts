@@ -72,6 +72,17 @@ class UserController {
       next(e);
     }
   }
+
+  public async deleteAvatar(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.res.locals.jwtPayload.userId as string;
+      const user = await userService.deleteAvatar(userId);
+      const result = UserPresenter.toResponse(user);
+      res.status(201).json(result);
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 export const userController = new UserController();

@@ -35,10 +35,20 @@ class UserService {
     const updatedUser = await userRepository.updateById(userId, { avatar });
 
     if (user.avatar) {
-      // TODO: Delete old avatar
+      await s3Service.deleteFile(user.avatar);
     }
 
     return updatedUser;
+  }
+
+  public async deleteAvatar(userId: string): Promise<IUser> {
+    const user = await userRepository.getById(userId);
+
+    if (user.avatar) {
+      await s3Service.deleteFile(user.avatar);
+    }
+
+    return await userRepository.updateById(userId, { avatar: null });
   }
 }
 

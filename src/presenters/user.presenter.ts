@@ -9,7 +9,9 @@ export class UserPresenter {
       age: data.age,
       email: data.email,
       phone: data.phone,
-      avatar: `${configs.AWS_ENDPOINT_URL}/${data.avatar}`,
+      avatar: data.avatar
+        ? `${configs.AWS_ENDPOINT_URL}/${configs.AWS_BUCKET_NAME}/${data.avatar}`
+        : null,
       role: data.role,
       isVerified: data.isVerified,
       createdAt: data.createdAt,
