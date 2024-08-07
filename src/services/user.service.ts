@@ -1,12 +1,18 @@
 import { UploadedFile } from "express-fileupload";
 
-import { IUser } from "../interfaces/user.interface";
+import {
+  IUser,
+  IUserListQuery,
+  IUserResponseList,
+} from "../interfaces/user.interface";
+import { UserPresenter } from "../presenters/user.presenter";
 import { userRepository } from "../repositories/user.repository";
 import { s3Service } from "./s3.service";
 
 class UserService {
-  public async getList(query: any): Promise<IUser[]> {
-    return await userRepository.getList(query);
+  public async getList(query: IUserListQuery): Promise<IUserResponseList> {
+    const [users, total] = await userRepository.getList(query);
+    return UserPresenter.toResponseList(users, total, query);
   }
 
   public async getById(userId: string): Promise<IUser> {
