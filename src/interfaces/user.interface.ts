@@ -1,4 +1,6 @@
+import { OrderEnum } from "../enums/order.enum";
 import { RoleEnum } from "../enums/role.enum";
+import { UserListOrderByEnum } from "../enums/user-list-order-by.enum";
 
 export interface IUser {
   _id?: string;
@@ -20,6 +22,8 @@ export interface IUserListQuery {
   limit?: number;
   page?: number;
   search?: string;
+  order?: OrderEnum;
+  orderBy?: UserListOrderByEnum;
 }
 
 export interface IUserResponse
