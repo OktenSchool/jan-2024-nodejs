@@ -1,0 +1,23 @@
+export const MeasureExecutionTime = (smile: string) => {
+  return (
+    target: any,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ): PropertyDescriptor => {
+    const originalMethod = descriptor.value;
+
+    descriptor.value = async function (...args: any[]): Promise<any> {
+      const start = performance.now();
+      try {
+        return originalMethod.apply(this, args);
+      } finally {
+        const end = performance.now();
+        console.log(
+          `${smile} Execution time of ${propertyKey}: ${(end - start).toFixed(2)} ms`,
+        );
+      }
+    };
+
+    return descriptor;
+  };
+};

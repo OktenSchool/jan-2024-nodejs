@@ -33,6 +33,8 @@ export class UserPresenter {
       data: data.map((item) => this.toResponse(item)),
       total,
       ...query,
+      // nextPage:  configs.API_URL + `/users?${query.page + 1}&limit=${query.limit}`,
+      // prevPage:  configs.API_URL + `/users?${query.page - 1}&limit=${query.limit}`,
     };
   }
 }

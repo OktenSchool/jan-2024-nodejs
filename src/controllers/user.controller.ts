@@ -1,11 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
+import { MeasureExecutionTime } from "../decorators/measure-time.decorator";
 import { IUser, IUserListQuery } from "../interfaces/user.interface";
 import { UserPresenter } from "../presenters/user.presenter";
 import { userService } from "../services/user.service";
 
 class UserController {
+  @MeasureExecutionTime("🙂")
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
       const query = req.query as IUserListQuery;
@@ -27,6 +29,7 @@ class UserController {
     }
   }
 
+  @MeasureExecutionTime("🤩")
   public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.res.locals.jwtPayload.userId as string;
